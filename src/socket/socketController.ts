@@ -7,6 +7,17 @@ export default function socketController(
   socket: Socket
 ): void {
   addUserOnline(socket);
+
+  socket.on("disconnect", async () => {
+    try {
+      await UserOnline.deleteOne({
+        socketId: socket.id,
+      });
+      console.log(`Client with ID ${socket.id} disconnected!`);
+    } catch (error) {
+      handleLog("USER DISCONNECTED", error);
+    }
+  });
 }
 
 async function addUserOnline(socket: Socket) {
@@ -27,8 +38,9 @@ async function addUserOnline(socket: Socket) {
       });
 
       socket.join("global");
+      console.log(`Client with ID ${socket.id} connected!`);
     }
   } catch (error) {
-    handleLog("ADD NEW USER ONLINE TO USERS ONLINE COLLECTION", error);
+    handleLog("NEW USER ONLINE", error);
   }
 }
