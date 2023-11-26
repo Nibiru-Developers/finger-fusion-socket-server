@@ -2,7 +2,6 @@ import http from "http";
 import express, { Express, Request, Response } from "express";
 import { Server as SocketServer, Socket } from "socket.io";
 import socketController from "../socket/socketController";
-import UserOnline from "../model/UserOnline";
 
 const createServer: Express = express();
 
@@ -21,28 +20,6 @@ const io = new SocketServer(mainServer, {
   },
 });
 io.on("connection", async (socket: Socket) => {
-  socket.join("global");
-
-  // ### ADD USER TO USER ONLINE COLLECTION
-  let { userId, userName, profilePicture } = socket.handshake.query;
-  userId = typeof userId === "string" ? userId : "";
-  userName = typeof userName === "string" ? userName : "";
-  profilePicture = typeof profilePicture === "string" ? profilePicture : "";
-
-  const checkUserOnline = await UserOnline.findOne({
-    userId,
-  });
-
-  if (!checkUserOnline) {
-    await UserOnline.create({
-      userId,
-      userName,
-      profilePicture,
-      socketId: socket.id,
-    });
-  }
-  // ### ADD USER TO USER ONLINE COLLECTION
-
   socketController(io, socket);
 });
 
