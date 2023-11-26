@@ -7,11 +7,11 @@ interface UserOnlineInterface extends Document {
   socketId: string;
 }
 
-const UserSchema = new Schema<UserOnlineInterface>({
+const UserOnlineSchema = new Schema<UserOnlineInterface>({
   userId: { type: String, required: true },
   userName: { type: String, required: true },
   profilePicture: { type: String, required: true },
   socketId: { type: String, required: true },
 });
 
-export default model<UserOnlineInterface>("user_onlines", UserSchema);
+export default model<UserOnlineInterface>("user_onlines", UserOnlineSchema);
