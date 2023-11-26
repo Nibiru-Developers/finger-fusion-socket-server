@@ -14,4 +14,4 @@ const UserOnlineSchema = new Schema<UserOnlineInterface>({
   socketId: { type: String, required: true },
 });
 
-export default model<UserOnlineInterface>("user_onlines", UserOnlineSchema);
+export default model<UserOnlineInterface>("users_online", UserOnlineSchema);
